@@ -15,6 +15,9 @@ def estimator(data):
 	impactInfectionsByRequestedTime = (data['reportedCases'] * 10) * (2 ** (timeInDays // 3))
 	impactSevereCasesByRequestedTime = math.trunc(0.15 * (data['reportedCases'] * 10) * (2 ** (timeInDays // 3)))
 	impactHospitalBedsByRequestedTime = math.trunc((0.35 * data['totalHospitalBeds']) - impactSevereCasesByRequestedTime)
+	impactCasesForICUByRequestedTime = math.trunc(0.05 * impactInfectionsByRequestedTime)
+	impactCasesForVentilatorsByRequestedTime = math.trunc(0.02 * impactInfectionsByRequestedTime)
+	impactDollarsInFlight = ((impactInfectionsByRequestedTime * data["region"]['avgDailyIncomePopulation']) * data["region"]['avgDailyIncomeInUSD']) // timeInDays
 
 	#Compute estimates:
 	##Severe Impact computation
@@ -22,18 +25,30 @@ def estimator(data):
 	severeImpactInfectionsByRequestedTime = (data['reportedCases'] * 50) * (2 ** (timeInDays // 3))
 	severeImpactSevereCasesByRequestedTime =  math.trunc(0.15 * (data['reportedCases'] * 50) * (2 ** (timeInDays // 3)))
 	severeImpactHospitalBedsByRequestedTime = math.trunc((0.35 * data['totalHospitalBeds']) - severeImpactSevereCasesByRequestedTime)
+	severeImpactCasesForICUByRequestedTime = math.trunc(0.05 * severeImpactInfectionsByRequestedTime)
+	severeImpactCasesForVentilatorsByRequestedTime = math.trunc(0.02 * severeImpactInfectionsByRequestedTime)
+	severeImpactDollarsInFlight = ((severeImpactInfectionsByRequestedTime * data["region"]['avgDailyIncomePopulation']) * data["region"]['avgDailyIncomeInUSD']) // timeInDays
 
 	#Estimates
 	estimate = {
 		'impact' : {
 			'currentlyInfected' : impactCurrentlyInfected,
-			'infectionsByRequestedTime' : impactInfectionsByRequestedTime
+			'infectionsByRequestedTime' : impactInfectionsByRequestedTime,
+			'severeCasesByRequestedTime' : impactSevereCasesByRequestedTime,
+			'HospitalBedsByRequestedTime' : impactHospitalBedsByRequestedTime,
+			'casesForICUByRequestedTime' : impactCasesForICUByRequestedTime,
+			'casesForVentilatorsByRequestedTime' : impactCasesForVentilatorsByRequestedTime,
+			'dollarsInFlight' : impactDollarsInFlight
 		},
 
 		'severeImpact' : {
 				'currentlyInfected' : severeImpactCurrentlyInfected,
-				'infectionsByRequestedTime' :  severeImpactInfectionsByRequestedTime
-				
+				'infectionsByRequestedTime' :  severeImpactInfectionsByRequestedTime,
+				'severeCasesByRequestedTime' : severeImpactSevereCasesByRequestedTime,
+				'HospitalBedsByRequestedTime' : severeImpactHospitalBedsByRequestedTime,
+				'casesForICUByRequestedTime' : severeImpactCasesForICUByRequestedTime,
+				'casesForVentilatorsByRequestedTime' : severeImpactCasesForVentilatorsByRequestedTime,
+				'dollarsInFlight' : severeImpactDollarsInFlight	
 		}
 
 	}
