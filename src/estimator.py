@@ -14,7 +14,7 @@ def estimator(data):
 	impactCurrentlyInfected = data['reportedCases'] * 10
 	impactInfectionsByRequestedTime = (data['reportedCases'] * 10) * (2 ** (timeInDays // 3))
 	impactSevereCasesByRequestedTime = math.trunc(0.15 * impactInfectionsByRequestedTime)
-	impactHospitalBedsByRequestedTime = math.trunc(((0.35 * data['totalHospitalBeds']) * timeInDays) - impactSevereCasesByRequestedTime)
+	impactHospitalBedsByRequestedTime = math.trunc((0.35 * data['totalHospitalBeds']) - impactSevereCasesByRequestedTime)
 	impactCasesForICUByRequestedTime = math.trunc(0.05 * impactInfectionsByRequestedTime)
 	impactCasesForVentilatorsByRequestedTime = math.trunc(0.02 * impactInfectionsByRequestedTime)
 	impactDollarsInFlight = ((impactInfectionsByRequestedTime * data["region"]['avgDailyIncomePopulation']) * data["region"]['avgDailyIncomeInUSD']) // timeInDays
@@ -24,7 +24,7 @@ def estimator(data):
 	severeImpactCurrentlyInfected = data['reportedCases'] * 50
 	severeImpactInfectionsByRequestedTime = (data['reportedCases'] * 50) * (2 ** (timeInDays // 3))
 	severeImpactSevereCasesByRequestedTime =  math.trunc(0.15 * severeImpactInfectionsByRequestedTime)
-	severeImpactHospitalBedsByRequestedTime = math.trunc(((0.35 * data['totalHospitalBeds']) * timeInDays) - severeImpactSevereCasesByRequestedTime)
+	severeImpactHospitalBedsByRequestedTime = math.trunc((0.35 * data['totalHospitalBeds']) - severeImpactSevereCasesByRequestedTime)
 	severeImpactCasesForICUByRequestedTime = math.trunc(0.05 * severeImpactInfectionsByRequestedTime)
 	severeImpactCasesForVentilatorsByRequestedTime = math.trunc(0.02 * severeImpactInfectionsByRequestedTime)
 	severeImpactDollarsInFlight = ((severeImpactInfectionsByRequestedTime * data["region"]['avgDailyIncomePopulation']) * data["region"]['avgDailyIncomeInUSD']) // timeInDays
